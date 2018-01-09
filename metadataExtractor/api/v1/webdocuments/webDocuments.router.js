@@ -22,10 +22,10 @@ router.post('/', function(req, res) {
     webDocCtrl.insertWebDocument(newWebDocObj, options, function(err, result) {
       if (err) {
         logger.error('Error in inserting web doc, ERROR::', err);
-        res.status(400).send({ error: 'Something went wrong, please check and tray again..!' });
+        res.status(400).send({ error: 'Something went wrong, please check and try again..!' });
         return;
       }
-      res.send(result);
+      res.status(201).send(result);
       return;
     })
   } catch (err) {
@@ -48,7 +48,7 @@ router.get('/', function(req, res) {
     webDocCtrl.getAllWebDocument(options, function(err, result) {
       if (err) {
         logger.error('Error in fetching web docs, ERROR::', err);
-        res.status(400).send({ error: 'Something went wrong, please check and tray again..!' });
+        res.status(400).send({ error: 'Something went wrong, please check and try again..!' });
         return;
       }
       res.send(result);
@@ -56,6 +56,29 @@ router.get('/', function(req, res) {
     })
   } catch (err) {
     logger.error('Unexpected error in fetching web docs, ERROR::', err);
+    res.status(500).send({ error: 'Unexpected internal error, please try later..!' });
+    return;
+  }
+});
+
+/**
+ *
+ * Fetch a specified web documents
+ *
+ */
+router.get('/:url', function(req, res) {
+  try {
+    webDocCtrl.findWebDocumentByURL(req.params.url, function(err, result) {
+      if (err) {
+        logger.error('Error in fetching a web document, ERROR::', err);
+        res.status(400).send({ error: 'Something went wrong, please check and try again..!' });
+        return;
+      }
+      res.send(result);
+      return;
+    })
+  } catch (err) {
+    logger.error('Unexpected error in fetching a web document, ERROR::', err);
     res.status(500).send({ error: 'Unexpected internal error, please try later..!' });
     return;
   }

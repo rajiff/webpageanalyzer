@@ -1,11 +1,12 @@
 const async = require('async');
 const WebDocumentsDAO = require('./webDocumentsDAO');
+let logger = require('../../../logger');
 
 const insertWebDocument = function(newWebDocObj, options, done) {
   async.waterfall([
     WebDocumentsDAO.insertWebDocument.bind(null, newWebDocObj, options),
     function(insertResult, callback) {
-      return WebDocumentsDAO.findWebDocumentByURL(newWebDocObj.URL, callback);
+      return WebDocumentsDAO.findWebDocumentByURL(newWebDocObj.url, callback);
     }
   ], done);
 }

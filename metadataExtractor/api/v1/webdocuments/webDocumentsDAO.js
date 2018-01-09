@@ -4,7 +4,7 @@ let logger = require('../../../logger');
 
 const insertWebDocument = function(newWebDocObj, { upsert }, done) {
   let webDocObj = {
-    URL: newWebDocObj.URL,
+    url: newWebDocObj.url,
     htmlVersion: "",
     title: "",
     htmlDoc: "",
@@ -13,12 +13,12 @@ const insertWebDocument = function(newWebDocObj, { upsert }, done) {
   };
 
   let query = `INSERT INTO ${config.CASSANDRA.TABLE_WEBDOC_METADATA} \
-		(URL, htmlVersion, title, htmlDoc, accessStatus, submittedOn) \
+		(url, htmlVersion, title, htmlDoc, accessStatus, submittedOn) \
 		VALUES (?, ?, ?, ?, ?, ?)`;
 
   const client = cassandraConn.getClient();
   client.execute(query, [
-    webDocObj.URL,
+    webDocObj.url,
     webDocObj.htmlVersion,
     webDocObj.title,
     webDocObj.htmlDoc,
@@ -49,7 +49,7 @@ const getAllWebDocument = function({ order, page, limit }, done) {
 }
 
 const findWebDocumentByURL = function(docURL, done) {
-  let query = `SELECT * FROM ${config.CASSANDRA.TABLE_WEBDOC_METADATA} WHERE URL = ?`;
+  let query = `SELECT * FROM ${config.CASSANDRA.TABLE_WEBDOC_METADATA} WHERE url = ?`;
 
   const client = cassandraConn.getClient();
   client.execute(query, [docURL], { prepare: true }, (err, result) => {

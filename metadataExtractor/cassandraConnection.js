@@ -35,14 +35,14 @@ const createKeyspace = function(done) {
  */
 const createTables = function(done) {
   let script = `CREATE TABLE IF NOT EXISTS ${config.CASSANDRA.TABLE_WEBDOC_METADATA} ( \
-    URL text, \
+    url text, \
     htmlVersion text, \
     title text, \
     htmlDoc text, \
     accessStatus text, \
     submittedOn timestamp, \
     analyzedOn timestamp, \
-    PRIMARY KEY (URL)
+    PRIMARY KEY (url)
   )`;
 
   const client = getClient();
