@@ -88,7 +88,7 @@ describe('API test cases for /webdocuments', function() {
       .end(function(err, res) {
         if (err) return done(err);
 
-        console.log("GET res ", res.body);
+        // console.log("GET res ", res.body);
 
         expect(res.body).not.equal(null);
         expect(res.body).not.to.be.an('array');
