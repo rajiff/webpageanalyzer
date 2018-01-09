@@ -9,21 +9,15 @@ const expect = chai.expect;
 describe('API test cases for /webdocuments', function() {
 
   before(function(done) {
-    cassandraConnection.initlizeDB((err, result) => {
+    const client = new cassandra.Client({ contactPoints: config.CASSANDRA.CASSANDRA_HOST_POINTS });
+    let query = `TRUNCATE TABLE ${config.CASSANDRA.TABLE_WEBDOC_METADATA}`;
+    client.execute(query, (err, result) => {
       if (err) {
-        console.log("Error with DB initialization, aborting...!");
         done(err);
+        return;
       }
-      const client = new cassandra.Client({ contactPoints: config.CASSANDRA.CASSANDRA_HOST_POINTS });
-      let query = `TRUNCATE TABLE ${config.CASSANDRA.TABLE_WEBDOC_METADATA}`;
-      client.execute(query, (err, result) => {
-        if (err) {
-          done(err);
-          return;
-        }
-        console.log(`Done truncating from ${config.CASSANDRA.TABLE_WEBDOC_METADATA}, result: ${result}`);
-        done(null);
-      });
+      console.log(`Done truncating from ${config.CASSANDRA.TABLE_WEBDOC_METADATA}, result: ${result}`);
+      done(null);
     });
   });
 
