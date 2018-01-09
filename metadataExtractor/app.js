@@ -13,7 +13,15 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // Initilise the db after some rudimentary middleware finished
-const mongoConn = require('./mongoConnection')();
+// const mongoConn = require('./mongoConnection')();
+const cassandraConnection = require('./cassandraConnection');
+cassandraConnection.createKeyspace((err, result) => {
+  if (err) {
+    console.log("Error in DB connection, aborting");
+    exit;
+  }
+  console.log("DB Connection OK..!");
+});
 
 // Mount the APIs specific to version
 app.use('/api/v1', require('./api/v1'));
