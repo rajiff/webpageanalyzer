@@ -8,4 +8,6 @@ let config = {
 	}
 }
 
+config.CASSANDRA.TABLE_WEBDOC_METADATA = `${config.CASSANDRA.KEYSPACE_WEBDOC_METDATA}.webdoc_metadata`
+
 module.exports = config;

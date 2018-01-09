@@ -1,6 +1,7 @@
 const cassandra = require('cassandra-driver');
 const config = require('./config');
 const logger = require('./logger');
+const async = require('async');
 
 // Standardizes and isolates the client creation in one module, so that we can control the hosts, keyspace etc., to be consistent
 const getClient = function() {
@@ -21,15 +22,53 @@ const createKeyspace = function(done) {
   client.execute(query, (err, result) => {
     if (err) {
       logger.error("Error in connection to cassandra, ERROR::", err);
-      if(done) done(err);
+      if (done) done(err);
       return;
     }
     logger.info("Connection, Keyspace OK, connected to ", result.info.queriedHost);
-    if(done) done(null, result);
+    if (done) done(null, result);
   });
+}
+
+/*
+ * callback is optional
+ */
+const createTables = function(done) {
+  let script = `CREATE TABLE IF NOT EXISTS ${config.CASSANDRA.TABLE_WEBDOC_METADATA} ( \
+    URL text, \
+    htmlVersion text, \
+    title text, \
+    htmlDoc text, \
+    accessStatus text, \
+    submittedOn timestamp, \
+    analyzedOn timestamp, \
+    PRIMARY KEY (URL)
+  )`;
+
+  const client = getClient();
+
+  client.execute(script, (err, result) => {
+    if (err) {
+      logger.error("Error in creating table, ERROR::", err);
+      if (done) done(err);
+      return;
+    }
+    logger.debug('Done creating table..!');
+    return done(null, result);
+  });
+}
+
+const initlizeDB = function(done) {
+  async.waterfall([
+    createKeyspace,
+    (r, cb) => { createTables(cb); }
+  ], (err, result) => {
+    if (done) done(err, result);
+  })
 }
 
 module.exports = {
   getClient,
-  createKeyspace
+  createKeyspace,
+  initlizeDB
 }

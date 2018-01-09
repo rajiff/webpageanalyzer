@@ -16,12 +16,12 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // Initilise the db after some rudimentary middleware finished
 // const mongoConn = require('./mongoConnection')();
 const cassandraConnection = require('./cassandraConnection');
-cassandraConnection.createKeyspace((err, result) => {
+cassandraConnection.initlizeDB((err, result) => {
   if (err) {
-    logger.fatal("Error in DB connection, aborting...!");
+    logger.fatal("Error with DB initialization, aborting...!");
     process.exit(1);
   }
-  logger.info("DB Connection OK..!");
+  logger.info("DB initialization OK..!");
 });
 
 // Mount the APIs specific to version
