@@ -1,6 +1,7 @@
 const express = require('express');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
+const logger = require('./logger');
 
 let app = express();
 
@@ -17,10 +18,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 const cassandraConnection = require('./cassandraConnection');
 cassandraConnection.createKeyspace((err, result) => {
   if (err) {
-    console.log("Error in DB connection, aborting");
-    exit;
+    logger.fatal("Error in DB connection, aborting...!");
+    process.exit(1);
   }
-  console.log("DB Connection OK..!");
+  logger.info("DB Connection OK..!");
 });
 
 // Mount the APIs specific to version

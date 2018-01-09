@@ -1,5 +1,6 @@
 const cassandra = require('cassandra-driver');
 const config = require('./config');
+const logger = require('./logger');
 
 // Standardizes and isolates the client creation in one module, so that we can control the hosts, keyspace etc., to be consistent
 const getClient = function() {
@@ -19,11 +20,11 @@ const createKeyspace = function(done) {
   const query = `CREATE KEYSPACE IF NOT EXISTS ${config.CASSANDRA.KEYSPACE_WEBDOC_METDATA} WITH replication = {'class': 'SimpleStrategy', 'replication_factor': '2' }`;
   client.execute(query, (err, result) => {
     if (err) {
-      console.log("Error in connection to cassandra, ERROR::", err);
+      logger.error("Error in connection to cassandra, ERROR::", err);
       if(done) done(err);
       return;
     }
-    console.log("Connection, Keyspace OK, connected to ", result.info.queriedHost);
+    logger.info("Connection, Keyspace OK, connected to ", result.info.queriedHost);
     if(done) done(null, result);
   });
 }
