@@ -1,0 +1,5 @@
+const worker = require('../api/v1/extractorWorker/');
+const registerWorker = require('../registerWorker');
+const config = require('../config');
+
+registerWorker(config.EVENTS.NEW_WEBDOCUMENT_ADDED, worker);
