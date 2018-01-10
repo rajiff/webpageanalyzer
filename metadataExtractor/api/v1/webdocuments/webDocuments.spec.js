@@ -4,7 +4,9 @@ const cassandra = require('cassandra-driver');
 const config = require('../../../config');
 const api = supertest(require('../../../app')); // supertest init;
 const cassandraConnection = require('../../../cassandraConnection');
+const redis = require("redis");
 const expect = chai.expect;
+const async = require('async');
 
 describe('API test cases for /webdocuments', function() {
 
@@ -22,22 +24,60 @@ describe('API test cases for /webdocuments', function() {
   });
 
   it('POST a webdocument, must create and return with status 201', function(done) {
+    // Expected to take little more time than default
+    // this.timeout(5000);
 
     let newWebDoc = { url: "http://google.com" };
 
-    api.post('/api/v1/webdocuments')
-      .set('Content-Type', 'application/json')
-      .send(newWebDoc)
-      .expect(201)
-      .end(function(err, res) {
-        if (err) return done(err);
+    async.parallel([
+      (cb) => {
+        // Check for the API response
+        api.post('/api/v1/webdocuments')
+          .set('Content-Type', 'application/json')
+          .send(newWebDoc)
+          .expect(201)
+          .end(function(err, res) {
+            if (err) return cb(err);
 
-        // console.log("POST res ", res.body);
+            // console.log("POST res ", res.body);
 
-        expect(res.body).not.equal(null);
-        expect(res.body.url).equal(newWebDoc.url);
-        done();
-      });
+            expect(res.body).not.equal(null);
+            expect(res.body.url).equal(newWebDoc.url);
+            cb();
+          });
+      },
+      (cb) => {
+        /// Check for th event
+        let channel = evenName = config.EVENTS.NEW_WEBDOCUMENT_ADDED;
+        let msgCount = 0;
+
+        sub = redis.createClient(config.REDIS.REDIS_URL);
+        sub.on("error", function(err) {
+          if (err)
+            cb(err)
+        });
+
+        sub.subscribe(channel);
+        sub.on("message", function(chn, message) {
+          if (channel === chn) {
+            ++msgCount;
+
+            console.log("Msg: ", msgCount, " MESSAGE::", message);
+
+            if (msgCount === 1) {
+              sub.unsubscribe();
+              sub.quit();
+
+              message = JSON.parse(message);
+              expect(message.payload.url).equal(newWebDoc.url);
+
+              cb();
+            }
+          }
+        });
+      }
+    ], done);
+
   });
 
   it('Get webdocuments, all inserted webdocuments should be returned', function(done) {
@@ -64,7 +104,7 @@ describe('API test cases for /webdocuments', function() {
       .end(function(err, res) {
         if (err) return done(err);
 
-        console.log("GET res ", res.body);
+        // console.log("GET res ", res.body);
 
         expect(res.body).not.equal(null);
         expect(res.body).not.to.be.an('array');

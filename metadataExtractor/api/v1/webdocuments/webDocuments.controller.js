@@ -1,11 +1,20 @@
 const async = require('async');
 const webDocService = require('./webDocuments.service');
+const messageBroker = require('../../../messageBroker');
+const config = require('../../../config');
+const logger = require('../../../logger');
 
 const insertWebDocument = function(newWebDocObj, options, done) {
   async.waterfall([
     webDocService.insertWebDocument.bind(null, newWebDocObj, options),
     function(insertResult, callback) {
-      return WebDocumentsDAO.findWebDocumentByURL(newWebDocObj.url, callback);
+      messageBroker.publishEvent(config.EVENTS.NEW_WEBDOCUMENT_ADDED, insertResult, (err, result) => {
+        if(err) {
+          logger.error("Error in publishing event ", config.EVENTS.NEW_WEBDOCUMENT_ADDED);
+        }
+        //Irrespective of the publish event status, we will return success with received input, so that controller sends back original object, not the event publish result
+        callback(null, insertResult);
+      });
     }
   ], done);
 }
