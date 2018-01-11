@@ -15,6 +15,7 @@
     "async": "^2.6.0",
     "body-parser": "^1.18.2",
     "cassandra-driver": "^3.3.0",
+    "cheerio": "^1.0.0-rc.2",
     "express": "^4.16.2",
     "log4js": "^2.4.1",
     "mongoose": "^5.0.0-rc1",

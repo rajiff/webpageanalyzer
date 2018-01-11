@@ -29,10 +29,10 @@ describe('Reading webdocuments for extracting metadata', function() {
       // console.log("Returned result::", result);
 
       expect(result).not.equal(null);
-      expect(result.accessStatus).equal("ECONNREFUSED");
-      expect(result.statusMessage).not.equal(null);
-      expect(result.htmlDoc).equal("");
-      expect(result.contentType).equal("");
+      expect(result.accessstatus).equal("ECONNREFUSED");
+      expect(result.statusmessage).not.equal(null);
+      expect(result.htmldoc).equal("");
+      expect(result.contenttype).equal("");
       done();
     });
   })
@@ -50,10 +50,10 @@ describe('Reading webdocuments for extracting metadata', function() {
       // console.log("Returned result::", result);
 
       expect(result).not.equal(null);
-      expect(result.accessStatus).equal("ENOTFOUND");
-      expect(result.statusMessage).not.equal(null);
-      expect(result.htmlDoc).equal("");
-      expect(result.contentType).equal("");
+      expect(result.accessstatus).equal("ENOTFOUND");
+      expect(result.statusmessage).not.equal(null);
+      expect(result.htmldoc).equal("");
+      expect(result.contenttype).equal("");
       done();
     });
   })
@@ -72,12 +72,12 @@ describe('Reading webdocuments for extracting metadata', function() {
 
       expect(result).not.equal(null);
       expect(result.error).equal("");
-      expect(result.statusMessage).equal("");
-      expect(result.htmlDoc).not.equal(null);
-      expect(result.htmlDoc.accessStatus).not.equal(null);
-      expect(result.htmlDoc).not.equal("");
-      expect(result.htmlDoc.accessStatus).not.equal("");
-      expect(result.contentType).not.equal("");
+      expect(result.statusmessage).equal("");
+      expect(result.htmldoc).not.equal(null);
+      expect(result.accessstatus).not.equal(null);
+      expect(result.htmldoc).not.equal("");
+      expect(result.htmldoc.accessstatus).not.equal("");
+      expect(result.contenttype).not.equal("");
       done();
     });
   });
@@ -98,12 +98,12 @@ describe('Reading webdocuments for extracting metadata', function() {
 
       expect(result).not.equal(null);
       expect(result.error).not.equal("");
-      expect(result.statusMessage).not.equal("");
-      expect(result.htmlDoc).not.equal(null);
-      expect(result.htmlDoc.accessStatus).not.equal(null);
-      expect(result.htmlDoc).not.equal("");
-      expect(result.htmlDoc.accessStatus).not.equal("");
-      expect(result.contentType).not.equal("");
+      expect(result.statusmessage).not.equal("");
+      expect(result.htmldoc).not.equal(null);
+      expect(result.accessstatus).not.equal(null);
+      expect(result.htmldoc).not.equal("");
+      expect(result.htmldoc.accessstatus).not.equal("");
+      expect(result.contenttype).not.equal("");
       done();
     });
   })

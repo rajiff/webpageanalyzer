@@ -71,10 +71,10 @@ const readWebDocument = function(webDoc, next) {
     .end((err, res) => {
       let result = normalizeHTTPResponse(err, res)
 
-      webDoc.contentType = result.contentType;
-      webDoc.htmlDoc = result.doc;
-      webDoc.accessStatus = result.status;
-      webDoc.statusMessage = result.errorMessage;
+      webDoc.contenttype = result.contentType;
+      webDoc.htmldoc = result.doc;
+      webDoc.accessstatus = "" + result.status; //To ensure it gets converted to string
+      webDoc.statusmessage = result.errorMessage;
       webDoc.error = result.error;
 
       next(null, webDoc);

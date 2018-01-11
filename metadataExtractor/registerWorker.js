@@ -33,7 +33,7 @@ const onMessage = function(channel, worker, client, next) {
       if (err) {
         logger.error("Worker returned error ", err);
       }
-      logger.info(`Worker finished with ${(!err)?'out':''} errors`);
+      logger.info(`Worker finished WITH ${(!err)?'OUT':''} errors`);
     });
   });
 }

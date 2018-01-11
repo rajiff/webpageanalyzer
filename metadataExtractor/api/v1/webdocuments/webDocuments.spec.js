@@ -11,6 +11,7 @@ const async = require('async');
 describe('API test cases for /webdocuments', function() {
 
   before(function(done) {
+    // CREATE KEYSPACE before running this test case (or simply run npm start once so that it crates)
     const client = new cassandra.Client({ contactPoints: config.CASSANDRA.CASSANDRA_HOST_POINTS });
     let query = `TRUNCATE TABLE ${config.CASSANDRA.TABLE_WEBDOC_METADATA}`;
     client.execute(query, (err, result) => {

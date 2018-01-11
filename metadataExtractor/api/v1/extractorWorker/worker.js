@@ -33,6 +33,11 @@ const doWork = function(message, done) {
     updateWebDocMetaData,
     publishWebDocMetaData
   ], (err, result) => {
+    if (err)
+      logger.debug("METADATA Extraction process done, ERROR::[", err, "] RESULT::[", result, "]");
+    else
+      logger.debug("METADATA Extraction process done for", result.url);
+
     done(err, result);
   })
 }

@@ -19,6 +19,10 @@ const insertWebDocument = function(newWebDocObj, options, done) {
   ], done);
 }
 
+const updateWebDocument = function(webDocObj, options, done) {
+  webDocService.updateWebDocument(webDocObj, options, done);
+}
+
 const getAllWebDocument = function(options, done) {
   webDocService.getAllWebDocument(options, done);
 }
@@ -29,6 +33,7 @@ const findWebDocumentByURL = function(docURL, done) {
 
 module.exports = {
   insertWebDocument,
+  updateWebDocument,
   getAllWebDocument,
   findWebDocumentByURL
 }
