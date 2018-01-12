@@ -1,0 +1,5 @@
+const worker = require('../api/v1/linkExtractor/');
+const registerWorker = require('../registerWorker');
+const config = require('../config');
+
+registerWorker(config.EVENTS.WEBDOCUMENT_METADTA_EXTRACTED, worker);

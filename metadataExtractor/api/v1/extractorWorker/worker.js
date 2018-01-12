@@ -8,7 +8,7 @@ const updateWebDocMetaData = require('./updateWebDocMetaData');
 const publishWebDocMetaData = require('./publishWebDocMetaData');
 
 const doWork = function(message, done) {
-  logger.debug("Got message to work ", message);
+  logger.debug("Got message to work ", message.event);
 
   // Get the URL
   // Make HTTP Request, follow redirection
