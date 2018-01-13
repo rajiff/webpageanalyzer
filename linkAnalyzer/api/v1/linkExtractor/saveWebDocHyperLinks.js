@@ -11,7 +11,7 @@ module.exports = function(webDoc, hyperLinkColln, next) {
       let webDocLink = {
         url: webDoc.url,
         hyperlink: docLink.hyperlink,
-        linksource: docLink.linkSource,
+        linksource: docLink.linksource,
         accessstatus: "",
         statusmessage: "",
         error: "",

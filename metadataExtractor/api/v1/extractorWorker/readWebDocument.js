@@ -24,7 +24,7 @@ const normalizeHTTPResponse = function(err, res) {
 
   } else if (!err && res) {
     // SUCCESS Cases
-    logger.error("SUCCESSful accessing specified web page..!");
+    logger.debug("SUCCESSful accessing specified web page..!");
 
     result.error = "";
     result.errorMessage = "";
