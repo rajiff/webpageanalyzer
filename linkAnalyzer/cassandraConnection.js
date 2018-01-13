@@ -38,11 +38,13 @@ const createTables = function(done) {
     url text, \
     hyperlink text, \
     linksource text, \
+    contenttype text, \
     accessstatus text, \
     statusmessage text, \
     error text, \
+    submittedon timestamp, \
     analyzedon timestamp, \
-    PRIMARY KEY (url)
+    PRIMARY KEY (url, hyperlink)
   )`;
   const client = getClient();
 

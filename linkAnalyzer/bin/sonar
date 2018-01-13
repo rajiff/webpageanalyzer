@@ -1,5 +1,5 @@
 const worker = require('../api/v1/linkSonar/');
-const registerWorker = require('../registerWorker');
+const registerQueueWorker = require('../registerQueueWorker');
 const config = require('../config');
 
-registerWorker(config.EVENTS.WEBDOCUMENT_EXTERNAL_LINK_EXTRACTED, worker);
+registerQueueWorker(config.EVENTS.WEBDOCUMENT_LINK_EXTRACTED, worker);

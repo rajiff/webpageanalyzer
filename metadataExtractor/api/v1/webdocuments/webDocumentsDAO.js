@@ -32,6 +32,7 @@ const insertWebDocument = function(newWebDocObj, { upsert }, done) {
     webDocObj.submittedon
   ], { prepare: true }, (err, result) => {
     if (err) {
+      logger.error(`Error inserting record to ${config.CASSANDRA.TABLE_WEBDOC_METADATA}, ERROR: ${err}`);
       done(err);
       return;
     }
@@ -59,6 +60,7 @@ const updateWebDocument = function(webDocObj, options, done) {
     webDocObj.url,
   ], { prepare: true }, (err, result) => {
     if (err) {
+      logger.debug(`Error updating record to ${config.CASSANDRA.TABLE_WEBDOC_METADATA}, ERROR: ${err}`);
       done(err);
       return;
     }
@@ -73,6 +75,7 @@ const getAllWebDocument = function({ order, page, limit }, done) {
   const client = cassandraConn.getClient();
   client.execute(query, (err, result) => {
     if (err) {
+      logger.debug(`Error fetching record from ${config.CASSANDRA.TABLE_WEBDOC_METADATA}, ERROR: ${error}`);
       done(err);
       return;
     }
@@ -87,6 +90,7 @@ const findWebDocumentByURL = function(docURL, done) {
   const client = cassandraConn.getClient();
   client.execute(query, [docURL], { prepare: true }, (err, result) => {
     if (err) {
+      logger.debug(`Error fetching record from ${config.CASSANDRA.TABLE_WEBDOC_METADATA}, ERROR: ${result.rows[0]}`);
       done(err);
       return;
     }

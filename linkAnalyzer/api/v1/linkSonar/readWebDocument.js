@@ -24,7 +24,7 @@ const normalizeHTTPResponse = function(err, res) {
 
   } else if (!err && res) {
     // SUCCESS Cases
-    logger.error("SUCCESSful accessing specified web page..!");
+    logger.debug("SUCCESSful accessing specified web page..!");
 
     result.error = "";
     result.errorMessage = "";
@@ -59,9 +59,9 @@ const normalizeHTTPResponse = function(err, res) {
   return result;
 }
 
-const readWebDocument = function(webDoc, next) {
+const readWebDocument = function(webDocLink, next) {
   request
-    .get(webDoc.url)
+    .get(webDocLink.accessURL)
     .timeout({
       response: (config.WEB_DOC_REQ_TIMEOUT || 5000), // Wait 20 seconds or as configured for the server to start sending,
       deadline: (config.WEB_DOC_REQ_DEADLINE || 60000), // but allow 1 minute or as configured for the file to finish loading.
@@ -71,13 +71,13 @@ const readWebDocument = function(webDoc, next) {
     .end((err, res) => {
       let result = normalizeHTTPResponse(err, res)
 
-      webDoc.contenttype = result.contentType;
-      webDoc.htmldoc = result.doc;
-      webDoc.accessstatus = "" + result.status; //To ensure it gets converted to string
-      webDoc.statusmessage = result.errorMessage;
-      webDoc.error = "" + result.error;
+      webDocLink.contenttype = result.contentType;
+      webDocLink.accessstatus = "" + result.status; //To ensure it gets converted to string
+      webDocLink.statusmessage = result.errorMessage;
+      webDocLink.error = "" + result.error;
+      webDocLink.analyzedon = new Date();
 
-      next(null, webDoc);
+      next(null, webDocLink);
     });
 }
 

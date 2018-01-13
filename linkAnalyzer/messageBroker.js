@@ -14,20 +14,33 @@ const publishEvent = function(eventName, eventPayload, done) {
   reidsClient.publish(eventName, publishData, done);
 
   /*process.on('SIGINT', function() {
-  	if(reidsClient) {
-  		logger.info("Quitting message broker connection..!");
-  		reidsClient.quit();
-  	}
+    if(reidsClient) {
+      logger.info("Quitting message broker connection..!");
+      reidsClient.quit();
+    }
   });
 
   process.on('SIGTERM', function() {
-  	if(reidsClient) {
-  		logger.info("Quitting on SIGTERM message broker connection..!");
-  		reidsClient.quit();
-  	}
+    if(reidsClient) {
+      logger.info("Quitting on SIGTERM message broker connection..!");
+      reidsClient.quit();
+    }
   });*/
 }
 
+publishToQueue = function(queueName, queueMsg, done) {
+  reidsClient = redis.createClient(config.REDIS.REDIS_URL);
+
+  reidsClient.on("error", function(err) {
+    if (err)
+      logger.error("Error with Redis ", err);
+  });
+
+  let publishData = JSON.stringify(queueMsg);
+  reidsClient.lpush(queueName, publishData, done);
+}
+
 module.exports = {
-	publishEvent
+  publishEvent,
+  publishToQueue
 }

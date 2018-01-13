@@ -1,36 +1,26 @@
-/*const async = require('async');
-const WebDocumentsDAO = require('./webDocumentsDAO');
+const async = require('async');
+const WebDocLinksDAO = require('./webDocLinksDAO');
 let logger = require('../../../logger');
 
-const insertWebDocument = function(newWebDocObj, options, done) {
-  async.waterfall([
-    WebDocumentsDAO.insertWebDocument.bind(null, newWebDocObj, options),
-    function(insertResult, callback) {
-      return WebDocumentsDAO.findWebDocumentByURL(newWebDocObj.url, callback);
-    }
-  ], done);
+const getHyperLinksOfWebDoc = function(url, options, done) {
+  WebDocLinksDAO.getHyperLinksOfWebDoc(url, options, done);
 }
 
-const updateWebDocument = function(webDocObj, options, done) {
-  async.waterfall([
-    WebDocumentsDAO.updateWebDocument.bind(null, webDocObj, options),
-    function(updateResult, callback) {
-      return WebDocumentsDAO.findWebDocumentByURL(webDocObj.url, callback);
-    }
-  ], done);
+const saveWebDocLinks = function(url, webDocLinkColln, options, done) {
+	async.waterfall([
+			WebDocLinksDAO.saveWebDocLinks.bind(null, webDocLinkColln, options),
+			(savedResult, cb) => {
+				getHyperLinksOfWebDoc(url, {}, cb);
+			}
+		], done);
 }
 
-const getAllWebDocument = function(options, done) {
-  WebDocumentsDAO.getAllWebDocument(options, done);
-}
-
-const findWebDocumentByURL = function(docURL, done) {
-  WebDocumentsDAO.findWebDocumentByURL(docURL, done);
+const updateWebDocLink = function(webDocLinkObj, options, done) {
+  WebDocLinksDAO.updateWebDocLink(webDocLinkObj, options, done);
 }
 
 module.exports = {
-  insertWebDocument,
-  updateWebDocument,
-  getAllWebDocument,
-  findWebDocumentByURL
-}*/
+  getHyperLinksOfWebDoc,
+  saveWebDocLinks,
+  updateWebDocLink
+}

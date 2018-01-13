@@ -40,4 +40,8 @@ describe('MessageBroker publish', function() {
       }
     });
   });
+
+  it('Publish to queue ', function(done) {
+
+  })
 });

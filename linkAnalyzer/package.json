@@ -8,7 +8,7 @@
   "license": "MIT",
   "scripts": {
     "start": "node bin/www",
-    "analyze": "node bin/analyzer",
+    "extract": "node bin/extract",
     "sonar": "node bin/sonar",
     "test": "mocha api/v1/**/*spec.js"
   },
