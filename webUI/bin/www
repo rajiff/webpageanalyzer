@@ -1,0 +1,8 @@
+const app = require('../app');
+const config = require('../config');
+
+const _port = (config.WWW_PORT || 8080);
+
+app.listen(_port, () => {
+  console.log('App is listening to request on port:', _port);
+});

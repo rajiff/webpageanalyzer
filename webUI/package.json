@@ -1,0 +1,21 @@
+{
+  "name": "WebPageAnalyzer",
+  "version": "1.0.0",
+  "private": true,
+  "description": "",
+  "main": "bin/www",
+  "author": "Basavaraj K N",
+  "license": "MIT",
+  "scripts": {
+    "start": "node bin/www"
+  },
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "express": "^4.16.2",
+    "http-proxy-middleware": "^0.17.4",
+    "log4js": "^2.4.1",
+    "morgan": "^1.9.0"
+  },
+  "devDependencies": {},
+  "keywords": []
+}
