@@ -5,10 +5,10 @@ const api = supertest(require('../../../app')); // supertest init;
 const expect = chai.expect;
 const async = require('async');
 
-describe('API test cases for fetching hyper links of a web document', function() {
+describe('API test cases for fetching headings of a web document', function() {
   it('', function(done) {
     let url = 'http://google.com';
-    api.get( ('/api/v1/webdoclinks/'+encodeURIComponent(url)) )
+    api.get( ('/api/v1/webdocheadings/'+encodeURIComponent(url)) )
       .set('Content-Type', 'application/json')
       .expect(200)
       .end(function(err, res) {

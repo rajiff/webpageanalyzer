@@ -45,7 +45,7 @@ const createTables = function(done) {
     error text, \
     submittedon timestamp, \
     analyzedon timestamp, \
-    PRIMARY KEY (url)
+    PRIMARY KEY (url) \
   )`;
   const client = getClient();
 

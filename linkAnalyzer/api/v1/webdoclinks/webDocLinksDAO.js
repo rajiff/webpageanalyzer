@@ -3,11 +3,11 @@ let async = require('async');
 let config = require('../../../config');
 let logger = require('../../../logger');
 
-const getHyperLinksOfWebDoc = function(webDockURL, { order, page, limit }, done) {
+const getHyperLinksOfWebDoc = function(webDocURL, { order, page, limit }, done) {
   let query = `SELECT * FROM ${config.CASSANDRA.TABLE_WEBDOC_LINKS} WHERE url = ?`;
 
   const client = cassandraConn.getClient();
-  client.execute(query, [webDockURL], (err, result) => {
+  client.execute(query, [webDocURL], (err, result) => {
     if (err) {
       logger.debug(`Error fetching record from ${config.CASSANDRA.TABLE_WEBDOC_LINKS}, ERROR: ${err}`);
       done(err);
@@ -19,9 +19,14 @@ const getHyperLinksOfWebDoc = function(webDockURL, { order, page, limit }, done)
 }
 
 const saveWebDocLinks = function(webDocLinkColln, { upsert }, done) {
+  if(!webDocLinkColln.length) {
+    done({error: 'Empty collection of links cannot be saved..!'});
+    return;
+  }
+
   let queryColln = [];
 
-  webDocLinkColln.map((docLink) => {
+  queryColln = webDocLinkColln.map((docLink) => {
 
     docLink.submittedon = new Date();
 
@@ -40,7 +45,8 @@ const saveWebDocLinks = function(webDocLinkColln, { upsert }, done) {
       docLink.submittedon
     ];
 
-    queryColln.push({ query, params });
+    // queryColln.push({ query, params });
+    return { query, params };
   });
 
   const client = cassandraConn.getClient();

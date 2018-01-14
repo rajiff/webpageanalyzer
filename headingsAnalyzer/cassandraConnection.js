@@ -18,7 +18,7 @@ const getClient = function() {
 const createKeyspace = function(done) {
   const client = getClient();
   // Create keyspace for a simple standalone (SimpleStrategy) cassandra node
-  const query = `CREATE KEYSPACE IF NOT EXISTS ${config.CASSANDRA.KEYSPACE_WEBDOC_HYPERLINKS} WITH replication = {'class': 'SimpleStrategy', 'replication_factor': '2' }`;
+  const query = `CREATE KEYSPACE IF NOT EXISTS ${config.CASSANDRA.KEYSPACE_WEBDOC_HEADINGS} WITH replication = {'class': 'SimpleStrategy', 'replication_factor': '2' }`;
   client.execute(query, (err, result) => {
     if (err) {
       logger.error("Error in connection to cassandra, ERROR::", err);
@@ -34,17 +34,15 @@ const createKeyspace = function(done) {
  * callback is optional
  */
 const createTables = function(done) {
-  let script = `CREATE TABLE IF NOT EXISTS ${config.CASSANDRA.TABLE_WEBDOC_LINKS} ( \
+  let script = `CREATE TABLE IF NOT EXISTS ${config.CASSANDRA.TABLE_WEBDOC_HEADINGS} ( \
     url text, \
-    hyperlink text, \
-    linksource text, \
-    contenttype text, \
-    accessstatus text, \
-    statusmessage text, \
-    error text, \
+    heading text, \
+    occurrance int, \
+    headingtext text, \
+    headingtag text, \
     submittedon timestamp, \
     analyzedon timestamp, \
-    PRIMARY KEY (url, hyperlink) \
+    PRIMARY KEY (url, occurrance) \
   )`;
   const client = getClient();
 

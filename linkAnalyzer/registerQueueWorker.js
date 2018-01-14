@@ -61,6 +61,8 @@ const createClient = function(redisURL, next) {
 
       client.unsubscribe();
       client.quit();
+
+      process.exit(1);
     }
   });
 

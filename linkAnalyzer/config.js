@@ -1,4 +1,5 @@
 let config = {
+  WWW_PORT: (process.env.PORT || 8010),
   CASSANDRA: {
     CASSANDRA_HOST_POINTS: [(process.env.CASSANDRA_HOST || '192.168.99.100')],
     KEYSPACE_WEBDOC_HYPERLINKS: (process.env.CASSANDRA_KEYSPACE_WEBDOC_HYPERLINKS || 'webdocuments_hyperlinks')

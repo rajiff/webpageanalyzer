@@ -48,7 +48,6 @@ module.exports = function(webDoc, next) {
       });
 
       logger.debug(`Extracted ${hyperLinkColln.length} number of webdocument hyperlinks for ${webDoc.url}`);
-      logger.debug('Extracted links ', hyperLinkColln);
 
       next(null, hyperLinkColln);
     }
