@@ -77,7 +77,7 @@ export default class WebDocLinksDetails extends Component {
         <div key={docLink.hyperlink}>
           <ListItem
             leftAvatar={<Avatar size={28} backgroundColor={'indigo'}>{index+1}</Avatar>}
-            primaryText={<a href={`${docLink.url}${docLink.hyperlink}`} target="_blank">{docLink.hyperlink}</a>}
+            primaryText={<a href={(docLink.linksource === 'internal')?`${docLink.url}${docLink.hyperlink}`:`${docLink.url}`} target="_blank">{docLink.hyperlink}</a>}
             secondaryTextLines={2}
             secondaryText={
               <p>
