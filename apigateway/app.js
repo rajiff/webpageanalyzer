@@ -3,6 +3,7 @@ const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const logger = require('./logger');
 const httpProxy = require('http-proxy-middleware');
+const config = require('./config');
 
 let app = express();
 
@@ -19,13 +20,13 @@ app.use('/hello', (req, res) => {
 });
 
 // Simple http proxy with rewrite path logic, to simulate a API gateway
-proxyMetadata = httpProxy({target: 'http://localhost:8000', pathRewrite: {'^/metadata/' : '/'}});
+proxyMetadata = httpProxy({target: config.METADATA_URL, pathRewrite: {'^/metadata/' : '/'}});
 app.use('/metadata/', proxyMetadata);
 
-proxyDocLinks = httpProxy({target: 'http://localhost:8010', pathRewrite: {'^/doclinks/' : '/'}});
+proxyDocLinks = httpProxy({target: config.LINKS_URL, pathRewrite: {'^/doclinks/' : '/'}});
 app.use('/doclinks/', proxyDocLinks);
 
-proxyDocHeadings = httpProxy({target: 'http://localhost:8020', pathRewrite: {'^/docheadings/' : '/'}});
+proxyDocHeadings = httpProxy({target: config.HEADINGS_URL, pathRewrite: {'^/docheadings/' : '/'}});
 app.use('/docheadings/', proxyDocHeadings);
 
 app.use((req, res) => {

@@ -20,6 +20,9 @@ services:
         condition: any
     environment:
       PORT: 8080
+      METADATA_URL: 'http://wpa_md_www:8000'
+      LINKS_URL: 'http://wpa_la_www:8010'
+      HEADINGS_URL: 'http://wpa_ha_www:8020'
     # entrypoint:
     #   - "npm start"
     expose:
