@@ -56,13 +56,13 @@ export default class WebDocList extends Component {
     return (
       <Dialog
         title={`Analysis of : ${this.state.showDetailsForURL}`}
-        modal={true}
+        modal={false}
         open={this.state.openWebDocDetailsDialog}
-        actions={[
-          <FlatButton label="Cancel" primary={false} onClick={this.handleWebDocDetailsDialogClose}/>
-        ]}
+        actions={[<FlatButton label="Cancel" primary={true} onClick={this.handleWebDocDetailsDialogClose}/>]}
+        autoDetectWindowHeight={true}
         autoScrollBodyContent={true}
         contentStyle={this.styles.customStyle}
+        onRequestClose={this.handleWebDocDetailsDialogClose}
       >
         <WebDocDetails url={this.state.showDetailsForURL} />
       </Dialog>
@@ -71,12 +71,11 @@ export default class WebDocList extends Component {
 
   getDocList = () => {
     return this.props.docs.map((webDoc) => {
-      // console.log(webDoc)
       return (
         <div key={webDoc.url}>
           <ListItem
             leftAvatar={<Public style={{height: "36px", width: "36px"}} color={this.accessColors[(webDoc.accessstatus/100)]}/>}
-            primaryText={<span>{webDoc.title} <a href={webDoc.url} target={"_blank"}>{webDoc.url}</a></span>}
+            primaryText={<span><a href={webDoc.url} target={"_blank"}>{`${webDoc.title} ${webDoc.url}`}</a></span>}
             secondaryTextLines={2}
             secondaryText={
               <p>
@@ -104,6 +103,15 @@ export default class WebDocList extends Component {
           {(this.state.openWebDocDetailsDialog) ? this.getWebDocDetailsDialog():''}
           </Col>
         </Row>
+
+        <Row center="xs">
+          <Col xs={11}>
+            {
+              (this.props.docs.length) ? '':<h3>{'You seems to have not analyzed any web document, add a new URL to analyze, Eg: http://google.com'}</h3>
+            }
+          </Col>
+        </Row>
+
         <Row >
           <Col xs={11}>
             <List>

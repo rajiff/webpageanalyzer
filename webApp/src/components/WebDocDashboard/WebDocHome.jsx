@@ -179,6 +179,7 @@ export default class WebDocHome extends Component {
         webDocs.unshift(webDocObj);
 
         this.setState({
+          docURL: "",
           openAddNewDialog: false,
           errorMessage: '',
           userMessage: `Successfully submitted analysis request, check after some time (2 second)..!`,
@@ -186,6 +187,7 @@ export default class WebDocHome extends Component {
         });
       } else {
         this.setState({
+          docURL: "",
           openAddNewDialog: false,
           errorMessage: `Error occurred ${err}`,
           userMessage: ''
@@ -205,9 +207,9 @@ export default class WebDocHome extends Component {
           <FlatButton label="Analyze" primary={true} onClick={this.handleAnalyzeNewURL}/>
         ]}
       >
-        <h4>You are about to submit a valid URL for analysis, which make take few seconds to analyze</h4>
+        <h4>You are about to submit a URL for analysis, this may take few seconds to analyze</h4>
         <p>
-          PS: Make sure the URL is accessible and is of content-type `text/html`, for effective use.
+          PS: Only accessible URLs with content-type `text/html` are analyzed
         </p>
         <TextField
           type="url"

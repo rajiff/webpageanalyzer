@@ -76,6 +76,13 @@ export default class WebDocDetails extends Component {
   getWebDocMetaDataBlock = () => {
     return (
       <div>
+          <Row>
+            <Col xs={12}>
+            {
+              (this.state.errorMessage || '')
+            }
+            </Col>
+          </Row>
           <Row middle="xs">
             <Col center="xs" xs={11}>
               <h3>{this.state.webDoc.title}</h3>
@@ -91,10 +98,10 @@ export default class WebDocDetails extends Component {
           </Row>
           <Row middle="xs">
             <Col center="xs" xs={4}>
-              {this.state.webDoc.htmlversion}
+              {'Version: ' + this.state.webDoc.htmlversion}
             </Col>
             <Col xs={4}>
-              {this.state.webDoc.contenttype}
+              {'Content-type ' + this.state.webDoc.contenttype}
             </Col>
             <Col xs={4}>
               {(this.state.webDoc.accessstatus/100 !== 2)?<span style={{color:'red'}}>{this.state.webDoc.statusmessage}</span>:''}
@@ -130,7 +137,7 @@ export default class WebDocDetails extends Component {
 
         <Row>
           <Col xs={12}>
-            <h2>{"Headings"}</h2>
+            <h3>{"Headings"}</h3>
             <Divider />
           </Col>
         </Row>
@@ -142,7 +149,7 @@ export default class WebDocDetails extends Component {
         </Row>
         <Row >
           <Col xs={12}>
-            <h2>{"Links"}</h2>
+            <h3>{"Links"}</h3>
             <Divider />
           </Col>
         </Row>
