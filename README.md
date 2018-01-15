@@ -17,7 +17,12 @@ Small app for analyze web pages, in a scalable way using microservices approach
 ## TODO
 - Websocket integration with microservices and UI
 - UI - Web Document dialog is clunky (goes beyond view port) when content goes out of height, may be Material-UI issue
+- UI URL validation to input has to be fixed
 - Volume mounting for cassandra (intentionally left out)
 - Pagination of Web Documents in UI
 - Some more microservices for anlayzing (Authentication, Images, Videos, Keywords)
 - Replace existing api-gateway with a full featured on (Kong)
+- Need to replace messaging infra with Kafka or RabbitMQ, currently its the weakest part of the app
+- Need to document API (intentionally not documented, as purpose was different and not for public currently)
+- Need to implement security, authentication
+- Yet to test in Docker Swarm mode
