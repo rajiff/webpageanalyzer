@@ -1,34 +1,23 @@
 # webpageanalyzer
-Small app for analyse web pages, in a scalable way using microservices approach
+Small app for analyze web pages, in a scalable way using microservices approach
 
-### How to build in your local
+## Build using Docker
+- You need latest or abmove `Docker` `version 17` and above and `docker-compose` `version 1.14`
+- `docker-compose up --build -d` should run the app
+- If you are running a docker-machine, which has different IP, you might want to edit proxy property of webapp to point to correct docker-machine IP, before building the images to suit to your docker-machine IP address
 
-Run these commands in these sequence
+## Building as locally running services
+- Clone
+- Each folder is a Node JS micro service, do a `yarn` in each to install dependencies and run the script in corresponding folder's package.json (except test)
+- Requires or has dependency on Redis and Cassandra, if you are running it else where, each micro service has `config.js`, edit to suit to your need or set the corresponding environment variables
+- There are 9 services to run, before you access `http://localhost:3000`, which runs if all is running well
+- From UI user adds a URL, which is then analyzed by the each microservice for their part and stored in DB (cassandra), the Details view in UI stitches data from each service and displays it
+- API gateway is a quick simulated proxy, currently
 
-#### Clone the repo
-
-	git clone https://github.com/rajiff/webpageanalyzer.git
-
-#### currently only metadata extractor component is done and can run
-You need Cassandra, Redis running in your local environment
-set the environment variables `CASSANDRA_HOST` and `REDIS_URL` to point to your servers
-You can webpageanalyzer/metadataExtractor/config.js to check out the variables, you can override via environment variables
-
-	cd webpageanalyzer/metadataExtractor
-
-#### Install dependencies
-
-	yarn
-
-#### Run the application, so that it initilizes DB and stop it after it says DB is initilized (will see a better way later)
-
-	npm start
-	Ctrl+C
-
-#### Now run the extractor in another terminal
-
-	npm run extract
-
-#### Now run the test cases, it will run all the test cases and also will feed a URL to extractor, which gets analyzed for metadata
-
-	npm test
+## TODO
+- Websocket integration with microservices and UI
+- UI - Web Document dialog is clunky (goes beyond view port) when content goes out of height, may be Material-UI issue
+- Volume mounting for cassandra (intentionally left out)
+- Pagination of Web Documents in UI
+- Some more microservices for anlayzing (Authentication, Images, Videos, Keywords)
+- Replace existing api-gateway with a full featured on (Kong)
