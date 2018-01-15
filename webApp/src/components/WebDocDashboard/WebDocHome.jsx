@@ -205,6 +205,10 @@ export default class WebDocHome extends Component {
           <FlatButton label="Analyze" primary={true} onClick={this.handleAnalyzeNewURL}/>
         ]}
       >
+        <h4>You are about to submit a valid URL for analysis, which make take few seconds to analyze</h4>
+        <p>
+          PS: Make sure the URL is accessible and is of content-type `text/html`, for effective use.
+        </p>
         <TextField
           type="url"
           pattern="https?://.+/gi"

@@ -1,6 +1,8 @@
 import React,{Component} from 'react';
 import PropTypes from 'prop-types';
 
+import WebDocDetails from './WebDocDetails';
+
 import moment from 'moment';
 
 import { Grid, Row, Col } from 'react-flexbox-grid';
@@ -9,10 +11,24 @@ import Divider from 'material-ui/Divider';
 import Public from 'material-ui/svg-icons/social/public';
 import ActionDone from 'material-ui/svg-icons/action/done';
 import ActionDoneAll from 'material-ui/svg-icons/action/done-all';
+import Dialog from 'material-ui/Dialog';
+import FlatButton from 'material-ui/FlatButton';
 
 export default class WebDocList extends Component {
   constructor(props) {
     super(props);
+
+    this.state={
+      openWebDocDetailsDialog: false,
+      showDetailsForURL: undefined
+    }
+
+    this.styles = {
+      customStyle : {
+        width: '80%',
+        maxWidth: '100%'
+      }
+    }
 
     this.accessColors = {
       0: 'Grey',
@@ -26,6 +42,31 @@ export default class WebDocList extends Component {
 
   static propTypes = {
     docs: PropTypes.array.isRequired
+  }
+
+  handleWebDocSelect = (webDocURL) => {
+    this.setState({openWebDocDetailsDialog: true, showDetailsForURL: webDocURL});
+  }
+
+  handleWebDocDetailsDialogClose = () => {
+    this.setState({openWebDocDetailsDialog: false});
+  }
+
+  getWebDocDetailsDialog = () => {
+    return (
+      <Dialog
+        title={`Analysis of : ${this.state.showDetailsForURL}`}
+        modal={true}
+        open={this.state.openWebDocDetailsDialog}
+        actions={[
+          <FlatButton label="Cancel" primary={false} onClick={this.handleWebDocDetailsDialogClose}/>
+        ]}
+        autoScrollBodyContent={true}
+        contentStyle={this.styles.customStyle}
+      >
+        <WebDocDetails url={this.state.showDetailsForURL} />
+      </Dialog>
+    )
   }
 
   getDocList = () => {
@@ -48,6 +89,7 @@ export default class WebDocList extends Component {
                 }
               </p>
             }
+            onClick={this.handleWebDocSelect.bind(this, webDoc.url)}
           />
           <Divider inset={true}/>
         </div>
@@ -57,6 +99,11 @@ export default class WebDocList extends Component {
   render() {
     return(
       <Grid fluid style={{padding: "0px 8px 0px 8px"}}>
+        <Row>
+          <Col xs={11}>
+          {(this.state.openWebDocDetailsDialog) ? this.getWebDocDetailsDialog():''}
+          </Col>
+        </Row>
         <Row >
           <Col xs={11}>
             <List>
