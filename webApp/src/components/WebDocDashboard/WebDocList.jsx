@@ -5,7 +5,6 @@ import moment from 'moment';
 
 import { Grid, Row, Col } from 'react-flexbox-grid';
 import {List, ListItem} from 'material-ui/List';
-import Subheader from 'material-ui/Subheader';
 import Divider from 'material-ui/Divider';
 import Public from 'material-ui/svg-icons/social/public';
 import ActionDoneAll from 'material-ui/svg-icons/action/done-all';
@@ -30,7 +29,6 @@ export default class WebDocList extends Component {
 
   getDocList = () => {
     return this.props.docs.map((webDoc) => {
-      console.log(webDoc);
       return (
         <div key={webDoc.url}>
           <ListItem
@@ -54,12 +52,7 @@ export default class WebDocList extends Component {
   render() {
     return(
       <Grid fluid style={{padding: "0px 8px 0px 8px"}}>
-        <Row end="xs">
-          <Col xs={2}>
-            <Subheader>{`${this.props.docs.length} Web Documents`}</Subheader>
-          </Col>
-        </Row>
-        <Row>
+        <Row >
           <Col xs={11}>
             <List>
               {this.getDocList()}
