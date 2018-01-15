@@ -20,8 +20,8 @@ services:
         condition: any
     environment:
       PORT: 8080
-    entrypoint:
-      - "npm start"
+    # entrypoint:
+    #   - "npm start"
     expose:
       - 8080
     ports:
@@ -44,8 +44,8 @@ services:
         condition: any
     environment:
       PORT: 3000
-    entrypoint:
-      - "npm start"
+    # entrypoint:
+    #   - "npm start"
     ports:
       - "3000:3000"
 #    network_mode: "bridge"
@@ -72,7 +72,7 @@ services:
     #   - "npm start"
     entrypoint:
       -  /app/wait-for-service.sh
-      - 'localhost'
+      - 'wpa_cassandra'
       - '9042'
       - 'npm start'
     expose:
@@ -100,7 +100,7 @@ services:
     #   - "npm run extract"
     entrypoint:
       -  /app/wait-for-service.sh
-      - 'localhost'
+      - 'wpa_cassandra'
       - '9042'
       - 'npm run extract'
 #    network_mode: "bridge"
@@ -129,7 +129,7 @@ services:
     #   - "npm start"
     entrypoint:
       -  /app/wait-for-service.sh
-      - 'localhost'
+      - 'wpa_cassandra'
       - '9042'
       - 'npm start'
 #    network_mode: "bridge"
@@ -155,7 +155,7 @@ services:
     #   - "npm run extract"
     entrypoint:
       -  /app/wait-for-service.sh
-      - 'localhost'
+      - 'wpa_cassandra'
       - '9042'
       - 'npm run extract'
 #    network_mode: "bridge"
@@ -182,7 +182,7 @@ services:
     #   - "npm run sonar"
     entrypoint:
       -  /app/wait-for-service.sh
-      - 'localhost'
+      - 'wpa_cassandra'
       - '9042'
       - 'npm run sonar'
 #    network_mode: "bridge"
@@ -211,7 +211,7 @@ services:
     #   - "npm start"
     entrypoint:
       -  /app/wait-for-service.sh
-      - 'localhost'
+      - 'wpa_cassandra'
       - '9042'
       - 'npm start'
 #    network_mode: "bridge"
@@ -236,8 +236,8 @@ services:
     # entrypoint:
     #   - "npm run extract"
     entrypoint:
-      -  wait-for-service.sh
-      - 'localhost'
+      -  /app/wait-for-service.sh
+      - 'wpa_cassandra'
       - '9042'
       - 'npm run extract'
 #    network_mode: "bridge"
