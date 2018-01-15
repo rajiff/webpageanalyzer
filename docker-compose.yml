@@ -1,0 +1,282 @@
+version: '3'
+
+networks:
+  wpa_services:
+    driver: bridge
+
+services:
+
+  wpa_apigateway:
+    image: wpa_apigateway:1.0.0
+    container_name: wpa_apigateway
+    build: ./apigateway/
+    deploy:
+      replicas: 1
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 256M
+      restart_policy:
+        condition: any
+    environment:
+      PORT: 8080
+    entrypoint:
+      - "npm start"
+    expose:
+      - 8080
+    ports:
+      - "8080:8080"
+#    network_mode: "bridge"
+    networks:
+      - wpa_services
+
+  wpa_webapp:
+    image: wpa_webapp:1.0.0
+    container_name: wpa_webapp
+    build: ./webApp/
+    deploy:
+      replicas: 1
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 256M
+      restart_policy:
+        condition: any
+    environment:
+      PORT: 3000
+    entrypoint:
+      - "npm start"
+    ports:
+      - "3000:3000"
+#    network_mode: "bridge"
+    networks:
+      - wpa_services
+
+  wpa_md_www:
+    image: wpa_metadata:1.0.0
+    container_name: wpa_md_www
+    build: ./metadataExtractor/
+    deploy:
+      replicas: 1
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 256M
+      restart_policy:
+        condition: any
+    environment:
+      PORT: 8000
+      CASSANDRA_HOST_POINTS: 'wpa_cassandra'
+      REDIS_URL: 'redis://wpa_redis:6379/'
+    # entrypoint:
+    #   - "npm start"
+    entrypoint:
+      -  /app/wait-for-service.sh
+      - 'localhost'
+      - '9042'
+      - 'npm start'
+    expose:
+      - 8000
+#    network_mode: "bridge"
+    networks:
+      - wpa_services
+
+  wpa_md_extract:
+    image: wpa_metadata:1.0.0
+    container_name: wpa_md_extract
+    build: ./metadataExtractor/
+    deploy:
+      replicas: 1
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 256M
+      restart_policy:
+        condition: any
+    environment:
+      CASSANDRA_HOST_POINTS: 'wpa_cassandra'
+      REDIS_URL: 'redis://wpa_redis:6379/'
+    # entrypoint:
+    #   - "npm run extract"
+    entrypoint:
+      -  /app/wait-for-service.sh
+      - 'localhost'
+      - '9042'
+      - 'npm run extract'
+#    network_mode: "bridge"
+    networks:
+      - wpa_services
+
+  wpa_la_www:
+    image: wpa_linkanalyzer:1.0.0
+    container_name: wpa_la_www
+    build: ./linkAnalyzer/
+    deploy:
+      replicas: 1
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 256M
+      restart_policy:
+        condition: any
+    expose:
+      - 8010
+    environment:
+      PORT: 8010
+      CASSANDRA_HOST_POINTS: 'wpa_cassandra'
+      REDIS_URL: 'redis://wpa_redis:6379/'
+    # entrypoint:
+    #   - "npm start"
+    entrypoint:
+      -  /app/wait-for-service.sh
+      - 'localhost'
+      - '9042'
+      - 'npm start'
+#    network_mode: "bridge"
+    networks:
+      - wpa_services
+
+  wpa_la_extract:
+    image: wpa_linkanalyzer:1.0.0
+    container_name: wpa_la_extract
+    build: ./linkAnalyzer/
+    deploy:
+      replicas: 1
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 256M
+      restart_policy:
+        condition: any
+    environment:
+      CASSANDRA_HOST_POINTS: 'wpa_cassandra'
+      REDIS_URL: 'redis://wpa_redis:6379/'
+    # entrypoint:
+    #   - "npm run extract"
+    entrypoint:
+      -  /app/wait-for-service.sh
+      - 'localhost'
+      - '9042'
+      - 'npm run extract'
+#    network_mode: "bridge"
+    networks:
+      - wpa_services
+
+  wpa_la_sonar:
+    image: wpa_linkanalyzer:1.0.0
+    container_name: wpa_la_sonar
+    build: ./linkAnalyzer/
+    deploy:
+# As this does many number of Link requests, better to run this more than one instance
+      replicas: 3
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 256M
+      restart_policy:
+        condition: any
+    environment:
+      CASSANDRA_HOST_POINTS: 'wpa_cassandra'
+      REDIS_URL: 'redis://wpa_redis:6379/'
+    # entrypoint:
+    #   - "npm run sonar"
+    entrypoint:
+      -  /app/wait-for-service.sh
+      - 'localhost'
+      - '9042'
+      - 'npm run sonar'
+#    network_mode: "bridge"
+    networks:
+      - wpa_services
+
+  wpa_ha_www:
+    image: wpa_headingsanalyzer:1.0.0
+    container_name: wpa_ha_www
+    build: ./headingsAnalyzer/
+    deploy:
+      replicas: 1
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 256M
+      restart_policy:
+        condition: any
+    expose:
+      - 8020
+    environment:
+      PORT: 8020
+      CASSANDRA_HOST_POINTS: 'wpa_cassandra'
+      REDIS_URL: 'redis://wpa_redis:6379/'
+    # entrypoint:
+    #   - "npm start"
+    entrypoint:
+      -  /app/wait-for-service.sh
+      - 'localhost'
+      - '9042'
+      - 'npm start'
+#    network_mode: "bridge"
+    networks:
+      - wpa_services
+
+  wpa_ha_extract:
+    image: wpa_headingsanalyzer:1.0.0
+    container_name: wpa_ha_extractor
+    build: ./headingsAnalyzer/
+    deploy:
+      replicas: 1
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 256M
+      restart_policy:
+        condition: any
+    environment:
+      CASSANDRA_HOST_POINTS: 'wpa_cassandra'
+      REDIS_URL: 'redis://wpa_redis:6379/'
+    # entrypoint:
+    #   - "npm run extract"
+    entrypoint:
+      -  wait-for-service.sh
+      - 'localhost'
+      - '9042'
+      - 'npm run extract'
+#    network_mode: "bridge"
+    networks:
+      - wpa_services
+
+  wpa_redis:
+    image: smebberson/alpine-redis
+    container_name: wpa_redis
+    deploy:
+      replicas: 1
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 256M
+      restart_policy:
+        condition: any
+    expose:
+      - 6379
+    ports:
+      - "6379:6379"
+    networks:
+      - wpa_services
+
+  wpa_cassandra:
+    image: cassandra:3.11.0
+    container_name: wpa_cassandra
+    deploy:
+      replicas: 1
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 256M
+      restart_policy:
+        condition: any
+    expose:
+      - 9042
+    ports:
+      - "9042:9042"
+    networks:
+      - wpa_services
+
