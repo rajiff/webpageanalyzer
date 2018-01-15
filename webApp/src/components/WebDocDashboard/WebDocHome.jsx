@@ -23,7 +23,8 @@ export default class WebDocHome extends Component {
       webDocColln: [],
       pageStart: 1,
       hasMore: false,
-      userMessage: "",
+      errorMessage: "test",
+      userMessage: "test",
       docURL: "",
       handleDocURLTextError: "",
       collnQueryInProgress: false,
@@ -39,6 +40,20 @@ export default class WebDocHome extends Component {
         margin: "20px auto auto 5px",
         padding: "0px",
         fontWeight: "600"
+      },
+      errorMessage : {
+        background: '#f1f1f1',
+        color: "red",
+        padding: "8px",
+        fontSize: "14px",
+        borderRadius: "8px"
+      },
+      userMessage : {
+        background: '#f1f1f1',
+        color: "green",
+        padding: "8px",
+        fontSize: "14px",
+        borderRadius: "8px"
       }
     }
   }
@@ -89,6 +104,7 @@ export default class WebDocHome extends Component {
   loadWebDocs = (page) => {
     this.setState({
       collnQueryInProgress: true,
+      errorMessage: '',
       userMessage: ''
     });
 
@@ -104,7 +120,7 @@ export default class WebDocHome extends Component {
       if(err){
         let msg = this.normalizeHTTPError(err);
 
-        if(err) return this.setState({ userMessage: msg});
+        if(err) return this.setState({ errorMessage: msg});
       } else {
         let webDocs = this.state.webDocColln;
 
@@ -164,13 +180,15 @@ export default class WebDocHome extends Component {
 
         this.setState({
           openAddNewDialog: false,
-          userMessage: "Successfully submitted request to analyze, check after some time (2 second)..!",
+          errorMessage: '',
+          userMessage: `Successfully submitted analysis request, check after some time (2 second)..!`,
           webDocColln: webDocs
         });
       } else {
         this.setState({
           openAddNewDialog: false,
-          userMessage: `Error occurred ${err}`
+          errorMessage: `Error occurred ${err}`,
+          userMessage: ''
         });
       }
     });
@@ -191,7 +209,7 @@ export default class WebDocHome extends Component {
           type="url"
           pattern="https?://.+/gi"
 
-          floatingLabelFixed={true}
+          floatingLabelFixed={false}
           floatingLabelText="Web page (URL) to analyze"
           floatingLabelStyle={{"fontSize": "16px"}}
 
@@ -243,8 +261,24 @@ export default class WebDocHome extends Component {
             </Row>
 
             <Row center="xs">
-              <Col xs={12}>
-                <h4 style={{background: '#c0dce0'}}>{(this.state.userMessage?this.state.userMessage:'')}</h4>
+              <Col xs={6}>
+                {
+                  (this.state.errorMessage)?
+                    <h6 style={this.styles.errorMessage}>{(this.state.errorMessage?this.state.errorMessage:'')}</h6>
+                  :
+                    ''
+                }
+              </Col>
+            </Row>
+
+            <Row center="xs">
+              <Col xs={6}>
+                {
+                  (this.state.userMessage)?
+                    <h6 style={this.styles.userMessage}>{(this.state.userMessage?this.state.userMessage:'')}</h6>
+                  :
+                    ''
+                }
               </Col>
             </Row>
 

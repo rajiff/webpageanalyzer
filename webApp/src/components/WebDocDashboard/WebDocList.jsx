@@ -7,6 +7,7 @@ import { Grid, Row, Col } from 'react-flexbox-grid';
 import {List, ListItem} from 'material-ui/List';
 import Divider from 'material-ui/Divider';
 import Public from 'material-ui/svg-icons/social/public';
+import ActionDone from 'material-ui/svg-icons/action/done';
 import ActionDoneAll from 'material-ui/svg-icons/action/done-all';
 
 export default class WebDocList extends Component {
@@ -29,6 +30,7 @@ export default class WebDocList extends Component {
 
   getDocList = () => {
     return this.props.docs.map((webDoc) => {
+      // console.log(webDoc)
       return (
         <div key={webDoc.url}>
           <ListItem
@@ -37,10 +39,13 @@ export default class WebDocList extends Component {
             secondaryTextLines={2}
             secondaryText={
               <p>
-                {webDoc.htmlversion}, {webDoc.contenttype} {(webDoc.accessstatus/100 !== 2)?<span style={{color:'red'}}>, {webDoc.statusmessage}</span>:''}
+                {(webDoc.htmlversion) ? `${webDoc.htmlversion},`:""} {(webDoc.contenttype) ? `${webDoc.contenttype},`:""} {(webDoc.accessstatus/100 !== 2)?<span style={{color:'red'}}>{webDoc.statusmessage}</span>:''} {(!webDoc.analyzedon)?<span>{'pending for analysis..'}</span>:''}
                 <br/>
-                <ActionDoneAll style={{height: "16px", width: "16px"}}/>
-                {moment(webDoc.analyzedon).calendar()}
+                {(webDoc.analyzedon)?
+                  <span><ActionDoneAll style={{height: "16px", width: "16px"}}/>{moment(webDoc.analyzedon).calendar()}</span>
+                  :
+                  <span><ActionDone style={{height: "16px", width: "16px"}}/>{moment(webDoc.submittedon).calendar()}</span>
+                }
               </p>
             }
           />
