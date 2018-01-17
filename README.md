@@ -5,6 +5,13 @@ Small app for analyze web pages, in a scalable way using microservices approach
 - You need latest or abmove `Docker` `version 17` and above and `docker-compose` `version 1.14`
 - `docker-compose up --build -d` should run the app
 - If you are running a docker-machine, which has different IP, you might want to edit proxy property of webapp to point to correct docker-machine IP, before building the images to suit to your docker-machine IP address
+	i.e.,
+		- Open the file `./webApp/package.json`
+		- You will see `proxy` property in that json file will be set to something like `"proxy": "http://192.168.99.100:8080/"`, which is the IP address of apigateway service of the webpageanalyzer
+		- Edit that to replace the IP & PORT of your `DOCKER_HOST`
+		- If you are not using a docker machine, its mostly `localhost`
+		- The port is of API gateway, if you have not changed the port in docker-compose.yml for the apigateway, then port remain the same, which is `8080`
+		- Once you save the package.json, go ahead and build your docker images and up them
 
 ## Building as locally running services
 - Clone
