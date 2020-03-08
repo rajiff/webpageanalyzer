@@ -1,0 +1,21 @@
+image:
+  name: docker/compose:latest
+  entrypoint: ["/bin/sh", "-c"]
+
+services:
+  - docker:dind
+
+stages:
+- build_images
+
+before_script:
+  - docker version
+  - docker-compose version
+
+build:
+  stage: build_images
+  script:
+  script:
+    - docker-compose down
+    - docker-compose build
+    - docker-compose push

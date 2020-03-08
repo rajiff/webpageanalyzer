@@ -7,7 +7,7 @@ networks:
 services:
 
   wpa_apigateway:
-    image: wpa_apigateway:1.0.0
+    image: registry.gitlab.com/rajiff/webpageanalyzer/wpa_apigateway:1.0.0
     container_name: wpa_apigateway
     build: ./apigateway/
     deploy:
@@ -34,7 +34,7 @@ services:
       - wpa_services
 
   wpa_webapp:
-    image: wpa_webapp:1.0.0
+    image: registry.gitlab.com/rajiff/webpageanalyzer/wpa_webapp:1.0.0
     container_name: wpa_webapp
     build: ./webApp/
     deploy:
@@ -56,7 +56,7 @@ services:
       - wpa_services
 
   wpa_md_www:
-    image: wpa_metadata:1.0.0
+    image: registry.gitlab.com/rajiff/webpageanalyzer/wpa_metadata:1.0.0
     container_name: wpa_md_www
     build: ./metadataExtractor/
     deploy:
@@ -85,7 +85,7 @@ services:
       - wpa_services
 
   wpa_md_extract:
-    image: wpa_metadata:1.0.0
+    image: registry.gitlab.com/rajiff/webpageanalyzer/wpa_metadata:1.0.0
     container_name: wpa_md_extract
     build: ./metadataExtractor/
     deploy:
@@ -111,7 +111,7 @@ services:
       - wpa_services
 
   wpa_la_www:
-    image: wpa_linkanalyzer:1.0.0
+    image: registry.gitlab.com/rajiff/webpageanalyzer/wpa_linkanalyzer:1.0.0
     container_name: wpa_la_www
     build: ./linkAnalyzer/
     deploy:
@@ -140,7 +140,7 @@ services:
       - wpa_services
 
   wpa_la_extract:
-    image: wpa_linkanalyzer:1.0.0
+    image: registry.gitlab.com/rajiff/webpageanalyzer/wpa_linkanalyzer:1.0.0
     container_name: wpa_la_extract
     build: ./linkAnalyzer/
     deploy:
@@ -166,7 +166,7 @@ services:
       - wpa_services
 
   wpa_la_sonar:
-    image: wpa_linkanalyzer:1.0.0
+    image: registry.gitlab.com/rajiff/webpageanalyzer/wpa_linkanalyzer:1.0.0
     container_name: wpa_la_sonar
     build: ./linkAnalyzer/
     deploy:
@@ -193,7 +193,7 @@ services:
       - wpa_services
 
   wpa_ha_www:
-    image: wpa_headingsanalyzer:1.0.0
+    image: registry.gitlab.com/rajiff/webpageanalyzer/wpa_headingsanalyzer:1.0.0
     container_name: wpa_ha_www
     build: ./headingsAnalyzer/
     deploy:
@@ -222,7 +222,7 @@ services:
       - wpa_services
 
   wpa_ha_extract:
-    image: wpa_headingsanalyzer:1.0.0
+    image: registry.gitlab.com/rajiff/webpageanalyzer/wpa_headingsanalyzer:1.0.0
     container_name: wpa_ha_extractor
     build: ./headingsAnalyzer/
     deploy:
@@ -248,7 +248,7 @@ services:
       - wpa_services
 
   wpa_redis:
-    image: smebberson/alpine-redis
+    image: registry.gitlab.com/rajiff/webpageanalyzer/smebberson/alpine-redis
     container_name: wpa_redis
     deploy:
       replicas: 1
@@ -266,7 +266,7 @@ services:
       - wpa_services
 
   wpa_cassandra:
-    image: cassandra:3.11.0
+    image: registry.gitlab.com/rajiff/webpageanalyzer/cassandra:3.11.0
     container_name: wpa_cassandra
     deploy:
       replicas: 1
